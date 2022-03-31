@@ -1,3 +1,5 @@
+const mongoose = require("mongoose")
+
 const { Schema, model, ObjectId } = mongoose
 
 const User = new Schema({
