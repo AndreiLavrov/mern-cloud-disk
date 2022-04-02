@@ -6,8 +6,8 @@ import userReducer from '../reducers/userReducer';
 import fileReducer from '../reducers/fileReducer';
 
 const rootReducer = combineReducers({
-    user: userReducer,
-    files: fileReducer,
-})
+	user: userReducer,
+	files: fileReducer,
+});
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
