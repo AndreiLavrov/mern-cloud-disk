@@ -1,12 +1,15 @@
 const Router = require('express')
-const User = require('../models/User')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require("config")
 const { check, validationResult } = require('express-validator')
-const authMiddleware = require('../middleware/auth.middleware.js')
-const router = new Router()
 
+const User = require('../models/User')
+const File = require('../models/File.js')
+const fileService = require('../services/fileService.js')
+const authMiddleware = require('../middleware/auth.middleware.js')
+
+const router = new Router()
 
 router.post('/registration',
     [
@@ -32,6 +35,7 @@ router.post('/registration',
 
             await user.save()
 
+            await fileService.createDir(new File({ user: user.id, name: '' }));
             return res.json({ message: 'User was created' })
         } catch (e) {
             console.log(e)
