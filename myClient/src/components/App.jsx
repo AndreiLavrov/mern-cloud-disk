@@ -2,11 +2,11 @@ import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { auth } from '../api/authorisation.js';
+import { auth } from '../api/authorization.js';
 import Navbar from './navbar/Navbar';
 import './app.css';
-import Registration from './authorisation/Registration';
-import Login from './authorisation/Login.jsx';
+import Registration from './authorization/Registration';
+import Login from './authorization/Login.jsx';
 
 function App() {
 	const isAuth = useSelector(state => state.user.isAuth);

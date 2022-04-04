@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Input from '../../utils/input/Input';
-import './authorisation.css';
-import { registration } from '../../api/authorisation.js';
+import './authorization.css';
+import { login } from '../../api/authorization.js';
 
-const Registration = () => {
+
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
 
     return (
-      <div className='authorisation'>
-        <div className="authorisation__header">Регистрация</div>
+      <div className='authorization'>
+        <div className="authorization__header">Авторизация</div>
         <Input value={email} setValue={setEmail} type="text" placeholder="Введите email..."/>
         <Input value={password} setValue={setPassword} type="password" placeholder="Введите пароль..."/>
-        <button className="authorisation__btn" onClick={() => registration(email, password)}>Зарегистрироваться</button>
+        <button className="authorization__btn" onClick={() => dispatch(login(email, password))}>Войти</button>
       </div>
     );
 };
 
-export default Registration;
+export default Login;

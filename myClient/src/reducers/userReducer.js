@@ -1,4 +1,4 @@
-import { LOGOUT, SET_USER } from '../actions/actionTypes/authorisation.js';
+import { LOGOUT, SET_USER } from '../actions/actionTypes/authorization.js';
 
 
 const defaultState = {

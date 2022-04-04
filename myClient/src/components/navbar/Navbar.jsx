@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 // import Logo from '../../assets/img/navbar-logo.svg';
-import { logout } from '../../actions/actionCreators/authorisation.js';
+import { logout } from '../../actions/actionCreators/authorization.js';
 import '../../components/navbar/navbar.css';
 
 const Navbar = () => {

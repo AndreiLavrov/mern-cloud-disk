@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setUser } from '../actions/actionCreators/authorisation.js';
+import { setUser } from '../actions/actionCreators/authorization.js';
 
 export const registration = async (email, password) => {
   try {
@@ -33,7 +33,7 @@ export const auth = () => {
     try {
       const response = await axios.get('http://localhost:5000/api/auth/auth', {
         headers: {
-          Authorisation: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
       dispatch(setUser(response.data.user));
