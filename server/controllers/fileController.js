@@ -1,4 +1,5 @@
-const File = require('../models/File.js');
+const fileService = require('../services/fileService');
+const File = require('../models/File');
 
 class FileController {
   async createDir(req, res) {
@@ -26,7 +27,7 @@ class FileController {
 
   async getFiles(req, res) {
     try {
-      const files = File.find({ user: req.user.id, parent: req.query.parent })
+      const files = await File.find({ user: req.user.id, parent: req.query.parent });
       return res.json(files);
     } catch (e) {
       console.log(e);
