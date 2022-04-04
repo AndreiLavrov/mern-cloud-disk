@@ -1,9 +1,15 @@
-const defaultState = {};
+import { SET_FILES, SET_CURRENT_DIR } from '../actions/actionTypes/file.js';
+
+const defaultState = {
+	files: [],
+	currentDir: null,
+};
 
 export default function fileReducer(state = defaultState, action) {
 	switch (action.type) {
-
-	default:
-		return state;
+		case SET_FILES: return {...state, files: action.payload};
+		case SET_CURRENT_DIR: return {...state, currentDir: action.payload};
+		default:
+			return state;
 	}
 }
