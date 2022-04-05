@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFiles } from '../../api/file';
 import FileList from './FileList';
 
-import './disk.css';
+import './drive.css';
 
 const Disk = () => {
   const dispatch = useDispatch();
