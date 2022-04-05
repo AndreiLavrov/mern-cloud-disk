@@ -3,12 +3,14 @@ import {
   SET_CURRENT_DIR,
   ADD_FILE,
   SET_POPUP_DISPLAY,
+  PUSH_PATH_TO_STACK,
 } from '../actions/actionTypes/file';
 
 const defaultState = {
   files: [],
   currentDir: null,
   popupDisplay: 'none',
+  stackOfPaths: [],
 };
 
 export default function fileReducer(state = defaultState, action) {
@@ -21,6 +23,8 @@ export default function fileReducer(state = defaultState, action) {
       return { ...state, files: [...state.files, action.payload] };
     case SET_POPUP_DISPLAY:
       return { ...state, popupDisplay: action.payload };
+    case PUSH_PATH_TO_STACK:
+      return { ...state, stackOfPaths: [...state.stackOfPaths, action.payload] };
     default:
       return state;
   }
