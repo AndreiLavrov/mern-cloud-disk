@@ -1,14 +1,16 @@
 import React from 'react';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
-import './fileList.css'
-import File from "./File";
+import './fileList.css';
+import File from './File';
 
 const FileList = () => {
-  const files = useSelector(state => state.files.files).map(file => <File key={file.id} file={file}/>)
+  const files = useSelector((state) => state.files.files).map((file) => (
+    <File key={file.id} file={file} />
+  ));
 
   return (
-    <div className='filelist'>
+    <div className="filelist">
       <div className="filelist__header">
         <div className="filelist__name">Название</div>
         <div className="filelist__date">Дата</div>

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { setUser } from '../actions/actionCreators/authorization.js';
+import { setUser } from '../actions/actionCreators/authorization';
 
 export const registration = async (email, password) => {
   try {
     const response = await axios.post('http://localhost:5000/api/auth/registration', {
       email,
-      password
+      password,
     });
     alert(response.data.message);
   } catch (e) {
@@ -18,7 +18,7 @@ export const login = (email, password) => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
         email,
-        password
+        password,
       });
       dispatch(setUser(response.data.user));
       localStorage.setItem('token', response.data.token);
@@ -33,8 +33,8 @@ export const auth = () => {
     try {
       const response = await axios.get('http://localhost:5000/api/auth/auth', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       dispatch(setUser(response.data.user));
       localStorage.setItem('token', response.data.token);

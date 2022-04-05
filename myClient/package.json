@@ -17,18 +17,26 @@
     "redux-thunk": "^2.4.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "eslint": "^8.12.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "prettier": "^2.6.2"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "lint": "npx eslint \"src/**\" --fix",
+    "lint": "eslint --ext .js,.jsx src --fix",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100
   },
   "browserslist": {
     "production": [
@@ -42,10 +50,10 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/eslint-parser": "^7.17.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^8.12.0",
-    "eslint-plugin-react": "^7.29.4"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   }
 }
