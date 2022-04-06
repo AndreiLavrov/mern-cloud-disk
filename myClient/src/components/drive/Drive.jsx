@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFiles, uploadFile } from '../../api/file';
 import FileList from './FileList';
@@ -11,6 +11,7 @@ const Disk = () => {
   const dispatch = useDispatch();
   const currentDir = useSelector((state) => state.files.currentDir);
   const stackOfPaths = useSelector((state) => state.files.stackOfPaths);
+  const [dragEnter, setDragEnter] = useState(false);
 
   useEffect(() => {
     dispatch(getFiles(currentDir));
@@ -31,13 +32,40 @@ const Disk = () => {
     files.forEach((file) => dispatch(uploadFile(file, currentDir)));
   };
 
-  return (
-    <div className="disk">
+  const stopping = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const dragEnterHandler = (event) => {
+    stopping(event);
+    setDragEnter(true);
+  };
+
+  const dragLeaveHandler = (event) => {
+    stopping(event);
+    setDragEnter(false);
+  };
+
+  const dropHandler = (event) => {
+    stopping(event);
+    const files = [...event.dataTransfer.files];
+    files.forEach((file) => dispatch(uploadFile(file, currentDir)));
+    setDragEnter(false);
+  };
+
+  return !dragEnter ? (
+    <div
+      className="disk"
+      onDragEnter={dragEnterHandler}
+      onDragLeave={dragLeaveHandler}
+      onDragOver={dragEnterHandler}
+    >
       <div className="disk__btns">
-        <button className="disk__back" onClick={backClickHandler}>
+        <button className="disk__back" onClick={() => backClickHandler()}>
           Назад
         </button>
-        <button className="disk__create" onClick={showPopupHandler}>
+        <button className="disk__create" onClick={() => showPopupHandler()}>
           Создать папку
         </button>
         <div className="disk__upload">
@@ -55,6 +83,16 @@ const Disk = () => {
       </div>
       <FileList />
       <Popup />
+    </div>
+  ) : (
+    <div
+      className="drop-area"
+      onDrop={dropHandler}
+      onDragEnter={dragEnterHandler}
+      onDragLeave={dragLeaveHandler}
+      onDragOver={dragEnterHandler}
+    >
+      Перетащите файлы сюда
     </div>
   );
 };
