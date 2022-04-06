@@ -2,6 +2,7 @@ const fileService = require('../services/fileService');
 const config = require('config');
 const fs = require('fs');
 const File = require('../models/File');
+const User = require('../models/User');
 
 class FileController {
   async createDir(req, res) {
@@ -42,7 +43,7 @@ class FileController {
       const { file } = req.files;
 
       const parent = await File.findOne({ user: req.user.id, _id: req.body.parent });
-      const user = await File.findOne({ _id: req.user.id });
+      const user = await User.findOne({ _id: req.user.id });
 
       if (user.usedSpace + file.size > user.diskSpace) {
         return res.status(400).json({ message: 'There no space on this disk' });
