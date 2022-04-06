@@ -18,4 +18,4 @@ module.exports = (req, res, next) => {
   } catch (e) {
     return res.status(401).json({ message: 'Authorization error' });
   }
-}
+};

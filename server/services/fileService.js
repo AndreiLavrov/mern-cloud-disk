@@ -1,8 +1,7 @@
 const fs = require('fs');
-const config = require("config")
+const config = require('config');
 
 class FileService {
-
   createDir(file) {
     const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`;
 
@@ -10,14 +9,14 @@ class FileService {
       try {
         if (!fs.existsSync(filePath)) {
           fs.mkdirSync(filePath);
-          return resolve({ message: 'File was created' })
+          return resolve({ message: 'File was created' });
         } else {
-          return reject({ message: 'File already exist' })
+          return reject({ message: 'File already exist' });
         }
       } catch (e) {
-        return reject({ message: 'File error' })
+        return reject({ message: 'File error' });
       }
-    })
+    });
   }
 }
 

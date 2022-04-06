@@ -1,35 +1,29 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const config = require("config")
+const express = require('express');
+const mongoose = require('mongoose');
+const config = require('config');
 
-const authRouter = require("./routes/auth.routes")
-const fileRouter = require("./routes/file.routes.js")
-const corsMiddleware = require('./middleware/cors.middleware.js')
+const authRouter = require('./routes/auth.routes');
+const fileRouter = require('./routes/file.routes');
+const corsMiddleware = require('./middleware/cors.middleware');
 
-const app = express()
-const PORT = config.get('serverPort')
+const app = express();
+const PORT = config.get('serverPort');
 
-app.use(corsMiddleware)
-app.use(express.json())
-app.use("/api/auth", authRouter)
-app.use("/api/files", fileRouter)
+app.use(corsMiddleware);
+app.use(express.json());
+app.use('/api/auth', authRouter);
+app.use('/api/files', fileRouter);
 
 const start = async () => {
-    try {
-        mongoose.connect(config.get('dbUrl'));
+  try {
+    mongoose.connect(config.get('dbUrl'));
 
-        // just example from the doc
-        // const Cat = mongoose.model('Cat', { name: String });
-        // const kitty = new Cat({ name: 'Zildjian' });
-        // kitty.save().then(() => console.log('meow'));
+    app.listen(PORT, () => {
+      console.log(`Server was started by port ${PORT}`);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-        app.listen(PORT, () => {
-            console.log(`Server was started by port ${PORT}`)
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-}
-
-start()
+start();

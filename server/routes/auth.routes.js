@@ -1,100 +1,102 @@
 const Router = require('express')
-const bcryptjs = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const config = require("config")
-const { check, validationResult } = require('express-validator')
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const { check, validationResult } = require('express-validator');
 
-const User = require('../models/User')
-const File = require('../models/File.js')
-const fileService = require('../services/fileService.js')
-const authMiddleware = require('../middleware/auth.middleware.js')
+const User = require('../models/User');
+const File = require('../models/File.js');
+const fileService = require('../services/fileService.js');
+const authMiddleware = require('../middleware/auth.middleware.js');
 
-const router = new Router()
+const router = new Router();
 
-router.post('/registration',
-    [
-        check('email', 'wrong email').isEmail(),
-        check('password', 'password should be longer then 3, but shorter then 12').isLength({ min: 3, max: 12 }),
-    ],
-    async (req, res) => {
-        try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ message: 'wrong request', errors })
-            }
+router.post(
+  '/registration',
+  [
+    check('email', 'wrong email').isEmail(),
+    check('password', 'password should be longer then 3, but shorter then 12').isLength({
+      min: 3,
+      max: 12,
+    }),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'wrong request', errors });
+      }
 
-            const { email, password } = req.body
-            const candidate = await User.findOne({ email })
+      const { email, password } = req.body;
+      const candidate = await User.findOne({ email });
 
-            if (candidate) {
-                return res.status(400).json({ message: `User with email ${email} already exists` })
-            }
+      if (candidate) {
+        return res.status(400).json({ message: `User with email ${email} already exists` });
+      }
 
-            const hashPassword = await bcryptjs.hash(password, 7)
-            const user = new User({ email, password: hashPassword })
+      const hashPassword = await bcryptjs.hash(password, 7);
+      const user = new User({ email, password: hashPassword });
 
-            await user.save()
+      await user.save();
 
-            await fileService.createDir(new File({ user: user.id, name: '' }));
-            return res.json({ message: 'User was created' })
-        } catch (e) {
-            console.log(e)
-            res.send({message: 'Server error'})
-        }
-    })
+      await fileService.createDir(new File({ user: user.id, name: '' }));
+      return res.json({ message: 'User was created' });
+    } catch (e) {
+      console.log(e);
+      res.send({ message: 'Server error' });
+    }
+  }
+);
 
-router.post('/login',
-    async (req, res) => {
-        try {
-            const { email, password } = req.body
-            const user = await User.findOne({ email })
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' })
-            }
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-            const isPasswordValid = bcryptjs.compareSync(password, user.password)
-            if (!isPasswordValid) {
-                return res.status(400).json({ message: 'Wrong password' })
-            }
+    const isPasswordValid = bcryptjs.compareSync(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Wrong password' });
+    }
 
-            const token = jwt.sign({ id: user.id }, config.get('secretKey'), { expiresIn: '1h' })
-            return res.json({
-                token,
-                user: {
-                    id: user.id,
-                    email: user.email,
-                    diskSpace: user.diskSpace,
-                    usedSpace: user.usedSpace,
-                    avatar: user.avatar
-                }
-            })
-        } catch (e) {
-            console.log(e)
-            res.send({message: 'Server error'})
-        }
-    })
+    const token = jwt.sign({ id: user.id }, config.get('secretKey'), { expiresIn: '1h' });
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        diskSpace: user.diskSpace,
+        usedSpace: user.usedSpace,
+        avatar: user.avatar,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+    res.send({ message: 'Server error' });
+  }
+});
 
-router.get('/auth',
-    authMiddleware,
-    async (req, res) => {
-        try {
-            const user = await User.findOne({ _id: req.user.id });
-            const token = jwt.sign({ id: user.id }, config.get('secretKey'), { expiresIn: '1h' })
-            return res.json({
-                token,
-                user: {
-                    id: user.id,
-                    email: user.email,
-                    diskSpace: user.diskSpace,
-                    usedSpace: user.usedSpace,
-                    avatar: user.avatar
-                }
-            })
-        } catch (e) {
-            console.log(e)
-            res.send({message: 'Server error'})
-        }
-    })
+router.get('/auth', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.user.id });
+    const token = jwt.sign({ id: user.id }, config.get('secretKey'), { expiresIn: '1h' });
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        diskSpace: user.diskSpace,
+        usedSpace: user.usedSpace,
+        avatar: user.avatar,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+    res.send({ message: 'Server error' });
+  }
+});
 
 module.exports = router;
