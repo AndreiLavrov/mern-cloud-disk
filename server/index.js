@@ -10,7 +10,7 @@ const corsMiddleware = require('./middleware/cors.middleware');
 const app = express();
 const PORT = config.get('serverPort');
 
-app.use(fileUpload);
+app.use(fileUpload({}));
 app.use(corsMiddleware);
 app.use(express.json());
 app.use('/api/auth', authRouter);
@@ -21,7 +21,7 @@ const start = async () => {
     mongoose.connect(config.get('dbUrl'));
 
     app.listen(PORT, () => {
-      console.log(`Server was started by port ${PORT}`);
+      console.log(`Server started on port ${PORT}`);
     });
   } catch (e) {
     console.log(e);
