@@ -5,6 +5,7 @@ import FileList from './FileList';
 
 import './drive.css';
 import Popup from './PopUp';
+import Uploader from '../upload/Uploader';
 import { setCurrentDir, setPopupDisplay } from '../../actions/actionCreators/file';
 
 const Disk = () => {
@@ -83,6 +84,7 @@ const Disk = () => {
       </div>
       <FileList />
       <Popup />
+      <Uploader />
     </div>
   ) : (
     <div
