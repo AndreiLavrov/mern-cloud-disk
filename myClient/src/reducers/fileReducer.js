@@ -4,6 +4,7 @@ import {
   ADD_FILE,
   SET_POPUP_DISPLAY,
   PUSH_PATH_TO_STACK,
+  DELETE_FILE,
 } from '../actions/actionTypes/file';
 
 const defaultState = {
@@ -25,6 +26,11 @@ export default function fileReducer(state = defaultState, action) {
       return { ...state, popupDisplay: action.payload };
     case PUSH_PATH_TO_STACK:
       return { ...state, stackOfPaths: [...state.stackOfPaths, action.payload] };
+    case DELETE_FILE:
+      return {
+        ...state,
+        files: [...state.files.filter((file) => file._id !== action.payload)],
+      };
     default:
       return state;
   }

@@ -5,7 +5,7 @@ import './file.css';
 import dirLogo from '../../assets/img/dir.svg';
 import fileLogo from '../../assets/img/file.svg';
 import { pushPathToStack, setCurrentDir } from '../../actions/actionCreators/file';
-import { downloadFile } from '../../api/file';
+import { deleteFile, downloadFile } from '../../api/file';
 
 const File = ({ file }) => {
   const dispatch = useDispatch();
@@ -22,6 +22,11 @@ const File = ({ file }) => {
     downloadFile(file);
   };
 
+  const deleteClickHandler = (e) => {
+    e.stopPropagation();
+    dispatch(deleteFile(file));
+  };
+
   return (
     <div className="file" onClick={openDirHandler}>
       <img src={file.type === 'dir' ? dirLogo : fileLogo} alt="" className="file__img" />
@@ -33,7 +38,9 @@ const File = ({ file }) => {
           download
         </button>
       )}
-      <button className="file__btn file__delete">delete</button>
+      <button onClick={deleteClickHandler} className="file__btn file__delete">
+        delete
+      </button>
     </div>
   );
 };

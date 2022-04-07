@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setFiles, addFile } from '../actions/actionCreators/file';
+import { setFiles, addFile, deleteFile as deleteFileAction } from '../actions/actionCreators/file';
 
 export const getFiles = (dirId) => {
   return async (dispatch) => {
@@ -87,4 +87,20 @@ export const downloadFile = async (file) => {
     link.click();
     link.remove();
   }
+};
+
+export const deleteFile = (file) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/files?id=${file._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      dispatch(deleteFileAction(file._id));
+      alert(response.data.message);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
+  };
 };
