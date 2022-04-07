@@ -6,7 +6,6 @@ import { removeUploadFile } from '../../actions/actionCreators/uploader';
 
 const UploadFile = ({ file }) => {
   const dispatch = useDispatch();
-  debugger;
   const removeUploadFileHandler = () => dispatch(removeUploadFile(file.id));
 
   return (
