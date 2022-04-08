@@ -148,7 +148,7 @@ class FileController {
 
       files = files.filter((file) => file.name.includes(search));
 
-      return res.json({ files });
+      return res.json(files);
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Search error' });
