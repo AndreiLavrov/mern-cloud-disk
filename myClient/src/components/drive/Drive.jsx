@@ -12,6 +12,7 @@ const Disk = () => {
   const dispatch = useDispatch();
   const currentDir = useSelector((state) => state.files.currentDir);
   const stackOfPaths = useSelector((state) => state.files.stackOfPaths);
+  const isLoading = useSelector((state) => state.app.loader);
   const [dragEnter, setDragEnter] = useState(false);
   const [sort, setSort] = useState('type');
 
@@ -56,32 +57,40 @@ const Disk = () => {
     setDragEnter(false);
   };
 
+  if (isLoading) {
+    return (
+      <div className="loader">
+        <div className="lds-dual-ring"></div>
+      </div>
+    );
+  }
+
   return !dragEnter ? (
     <div
-      className="disk"
+      className="drive"
       onDragEnter={dragEnterHandler}
       onDragLeave={dragLeaveHandler}
       onDragOver={dragEnterHandler}
     >
-      <div className="disk__btns">
-        <button className="disk__back" onClick={() => backClickHandler()}>
+      <div className="drive__btns">
+        <button className="drive__back" onClick={() => backClickHandler()}>
           Назад
         </button>
-        <button className="disk__create" onClick={() => showPopupHandler()}>
+        <button className="drive__create" onClick={() => showPopupHandler()}>
           Создать папку
         </button>
-        <div className="disk__upload">
-          <label htmlFor="disk__upload-input" className="disk__upload-label">
+        <div className="drive__upload">
+          <label htmlFor="drive__upload-input" className="drive__upload-label">
             Загрузить файл
           </label>
           <input
             multiple={true}
             onChange={(event) => fileUploadHandler(event)}
             type="file"
-            id="disk__upload-input"
-            className="disk__upload-input"
+            id="drive__upload-input"
+            className="drive__upload-input"
           />
-          <select value={sort} onChange={(e) => setSort(e.target.value)} className="disk__select">
+          <select value={sort} onChange={(e) => setSort(e.target.value)} className="drive__select">
             <option value="name">По имени</option>
             <option value="type">По типу</option>
             <option value="date">По дате</option>

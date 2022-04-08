@@ -2,10 +2,12 @@ import axios from 'axios';
 
 import { addUploadFile, changeUploadFile, showUploader } from '../actions/actionCreators/uploader';
 import { setFiles, addFile, deleteFile as deleteFileAction } from '../actions/actionCreators/file';
+import { hideLoader, showLoader } from '../actions/actionCreators/app';
 
 export const getFiles = (dirId, sort) => {
   return async (dispatch) => {
     try {
+      dispatch(showLoader());
       let url = 'http://localhost:5000/api/files';
 
       if (dirId && sort) {
@@ -24,6 +26,8 @@ export const getFiles = (dirId, sort) => {
       dispatch(setFiles(response.data));
     } catch (e) {
       alert(e.response.data.message);
+    } finally {
+      dispatch(hideLoader());
     }
   };
 };
