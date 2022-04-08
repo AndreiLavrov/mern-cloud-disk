@@ -13,11 +13,12 @@ const Disk = () => {
   const currentDir = useSelector((state) => state.files.currentDir);
   const stackOfPaths = useSelector((state) => state.files.stackOfPaths);
   const [dragEnter, setDragEnter] = useState(false);
+  const [sort, setSort] = useState('type');
 
   useEffect(() => {
-    dispatch(getFiles(currentDir));
+    dispatch(getFiles(currentDir, sort));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDir]);
+  }, [currentDir, sort]);
 
   const backClickHandler = () => {
     const backDirId = stackOfPaths.pop();
@@ -80,6 +81,11 @@ const Disk = () => {
             id="disk__upload-input"
             className="disk__upload-input"
           />
+          <select value={sort} onChange={(e) => setSort(e.target.value)} className="disk__select">
+            <option value="name">По имени</option>
+            <option value="type">По типу</option>
+            <option value="date">По дате</option>
+          </select>
         </div>
       </div>
       <FileList />

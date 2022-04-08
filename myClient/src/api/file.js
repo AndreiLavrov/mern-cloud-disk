@@ -3,17 +3,24 @@ import axios from 'axios';
 import { addUploadFile, changeUploadFile, showUploader } from '../actions/actionCreators/uploader';
 import { setFiles, addFile, deleteFile as deleteFileAction } from '../actions/actionCreators/file';
 
-export const getFiles = (dirId) => {
+export const getFiles = (dirId, sort) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/files${dirId ? '?parent=' + dirId : ''}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
+      let url = 'http://localhost:5000/api/files';
+
+      if (dirId && sort) {
+        url = `${url}?parent=${dirId}&sort=${sort}`;
+      } else if (dirId) {
+        url = `${url}?parent=${dirId}`;
+      } else if (sort) {
+        url = `${url}?sort=${sort}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
       dispatch(setFiles(response.data));
     } catch (e) {
       alert(e.response.data.message);
