@@ -34,13 +34,19 @@ class FileController {
       let files;
       switch (sort) {
         case 'name':
-          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({ name: 1 });
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            name: 1,
+          });
           break;
         case 'type':
-          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({ type: 1 });
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            type: 1,
+          });
           break;
         case 'date':
-          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({ date: 1 });
+          files = await File.find({ user: req.user.id, parent: req.query.parent }).sort({
+            date: 1,
+          });
           break;
         default:
           files = await File.find({ user: req.user.id, parent: req.query.parent });
@@ -129,6 +135,23 @@ class FileController {
     } catch (e) {
       console.log(e);
       res.status(500).json({ message: 'Deleting error' });
+    }
+  }
+
+  async searchFile(req, res) {
+    try {
+      const { search } = req.query;
+      let files = await File.findOne({ user: req.user.id });
+      if (!files) {
+        return res.status(400).json({ message: 'Files not found' });
+      }
+
+      files = files.filter((file) => file.name.includes(search));
+
+      return res.json({ files });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: 'Search error' });
     }
   }
 }
