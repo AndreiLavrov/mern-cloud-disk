@@ -141,7 +141,7 @@ class FileController {
   async searchFile(req, res) {
     try {
       const { search } = req.query;
-      let files = await File.findOne({ user: req.user.id });
+      let files = await File.find({ user: req.user.id });
       if (!files) {
         return res.status(400).json({ message: 'Files not found' });
       }
