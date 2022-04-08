@@ -6,7 +6,7 @@ import FileList from './FileList';
 import './drive.css';
 import Popup from './PopUp';
 import Uploader from '../upload/Uploader';
-import { setCurrentDir, setPopupDisplay } from '../../actions/actionCreators/file';
+import { setCurrentDir, setFileView, setPopupDisplay } from '../../actions/actionCreators/file';
 
 const Disk = () => {
   const dispatch = useDispatch();
@@ -95,6 +95,8 @@ const Disk = () => {
             <option value="type">По типу</option>
             <option value="date">По дате</option>
           </select>
+          <button className="drive__plate" onClick={() => dispatch(setFileView('plate'))} />
+          <button className="drive__list" onClick={() => dispatch(setFileView('list'))} />
         </div>
       </div>
       <FileList />
