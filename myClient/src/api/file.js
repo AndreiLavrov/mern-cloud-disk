@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL } from '../config.js';
+import { API_URL } from '../config';
 import { addUploadFile, changeUploadFile, showUploader } from '../actions/actionCreators/uploader';
 import { setFiles, addFile, deleteFile as deleteFileAction } from '../actions/actionCreators/file';
 import { hideLoader, showLoader } from '../actions/actionCreators/app';

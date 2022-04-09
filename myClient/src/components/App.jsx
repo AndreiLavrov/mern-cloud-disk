@@ -8,6 +8,7 @@ import './app.css';
 import Registration from './authorization/Registration';
 import Login from './authorization/Login.jsx';
 import Drive from '../components/drive/Drive.jsx';
+import Profile from '../components/profile/Profile';
 
 function App() {
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -32,6 +33,7 @@ function App() {
           ) : (
             <Routes>
               <Route exact path="/" element={<Drive />} />
+              <Route exact path="/profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           )}

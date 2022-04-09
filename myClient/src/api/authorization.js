@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL } from '../config.js';
+import { API_URL } from '../config';
 import { setUser } from '../actions/actionCreators/authorization';
 
 export const registration = async (email, password) => {

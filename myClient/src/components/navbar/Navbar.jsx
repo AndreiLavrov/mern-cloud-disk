@@ -3,17 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 // import Logo from '../../assets/img/navbar-logo.svg';
-import { logout } from '../../actions/actionCreators/authorization';
 import '../../components/navbar/navbar.css';
+import defaultAvatar from '../../assets/img/defaultAvatar.svg';
+import { API_URL } from '../../config';
+import { logout } from '../../actions/actionCreators/authorization';
 import { showLoader } from '../../actions/actionCreators/app';
 import { getFiles, searchFiles } from '../../api/file';
 
 const Navbar = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
-  const currentDir = useSelector((state) => state.user.currentDir);
+  const currentDir = useSelector((state) => state.files.currentDir);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const [searchName, setSearchName] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(false);
+  const avatar = currentUser.avatar ? API_URL + '/' + currentUser.avatar : defaultAvatar;
 
   const searchChangeHandler = (e) => {
     setSearchName(e.target.value);
@@ -60,9 +64,14 @@ const Navbar = () => {
             </div>
           </>
         ) : (
-          <div className="navbar__login" onClick={() => dispatch(logout())}>
-            Выйти
-          </div>
+          <>
+            <div className="navbar__login" onClick={() => dispatch(logout())}>
+              Выйти
+            </div>
+            <NavLink to="/profile">
+              <img src={avatar} alt="avatar" className="navbar__avatar" />
+            </NavLink>
+          </>
         )}
       </div>
     </div>
