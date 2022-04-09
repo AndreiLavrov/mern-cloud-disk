@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 
 const authRouter = require('./routes/auth.routes');
 const fileRouter = require('./routes/file.routes');
+const profileRouter = require('./routes/profile.routes');
 const corsMiddleware = require('./middleware/cors.middleware');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(corsMiddleware);
 app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/files', fileRouter);
+app.use('/api/profile', profileRouter);
 
 const start = async () => {
   try {
