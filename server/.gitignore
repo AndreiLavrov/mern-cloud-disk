@@ -3,8 +3,8 @@
 /node_modules
 /.pnp
 .pnp.js
-server/files
-server/static
+/files
+/static
 
 # testing
 /coverage
