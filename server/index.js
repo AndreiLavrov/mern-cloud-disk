@@ -10,6 +10,7 @@ const corsMiddleware = require('./middleware/cors.middleware');
 const app = express();
 const PORT = config.get('serverPort');
 
+app.use(express.static('static'));
 app.use(fileUpload({}));
 app.use(corsMiddleware);
 app.use(express.json());

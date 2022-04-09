@@ -1,8 +1,9 @@
-const fileService = require('../services/fileService');
-const config = require('config');
 const fs = require('fs');
+const config = require('config');
+const fileService = require('../services/fileService');
 const File = require('../models/File');
 const User = require('../models/User');
+const Uuid = require('uuid');
 
 class FileController {
   async createDir(req, res) {
@@ -152,6 +153,34 @@ class FileController {
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Search error' });
+    }
+  }
+
+  async uploadAvatar(req, res) {
+    try {
+      const { file } = req.files;
+      const user = await User.findById(req.user.id);
+      const avatarName = Uuid.v4() + '.jpg';
+      file.mv(config.get('staticPath') + '\\' + avatarName);
+      user.avatar = avatarName;
+      await user.save();
+      return res.json(user);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: "Can't add avatar" });
+    }
+  }
+
+  async deleteAvatar(req, res) {
+    try {
+      const user = await User.findById(req.user.id);
+      fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar);
+      user.avatar = null;
+      await user.save();
+      return res.json(user);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ message: "Can't delete avatar" });
     }
   }
 }

@@ -2,5 +2,6 @@
   "serverPort": 5000,
   "dbUrl": "mongodb://db:db@localhost:27017/db?authSource=db&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
   "secretKey": "uyreu uhhkj khafkfe",
-  "filePath": "D:\\work\\my_study_projects\\mern-cloud-disk\\server\\files"
+  "filePath": "D:\\work\\my_study_projects\\mern-cloud-disk\\server\\files",
+  "staticPath": "D:\\work\\my_study_projects\\mern-cloud-disk\\server\\static"
 }
