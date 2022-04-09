@@ -39,7 +39,7 @@ router.post(
 
       await user.save();
 
-      await fileService.createDir(new File({ user: user.id, name: '' }));
+      await fileService.createDir(req, new File({ user: user.id, name: '' }));
       return res.json({ message: 'User was created' });
     } catch (e) {
       console.log(e);

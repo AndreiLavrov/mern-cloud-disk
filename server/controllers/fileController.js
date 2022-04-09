@@ -1,5 +1,4 @@
 const fs = require('fs');
-const config = require('config');
 const fileService = require('../services/fileService');
 const File = require('../models/File');
 const User = require('../models/User');
@@ -14,10 +13,10 @@ class FileController {
 
       if (!parentFile) {
         file.path = name;
-        await fileService.createDir(file);
+        await fileService.createDir(req, file);
       } else {
         file.path = `${parentFile.path}\\${file.name}`;
-        await fileService.createDir(file);
+        await fileService.createDir(req, file);
         parentFile.children.push(file._id);
         await parentFile.save();
       }
@@ -75,8 +74,8 @@ class FileController {
       user.usedSpace = user.usedSpace + file.size;
 
       const path = parent
-        ? `${config.get('filePath')}\\${user._id}\\${parent.path}\\${file.name}`
-        : `${config.get('filePath')}\\${user._id}\\${file.name}`;
+        ? `${req.filePath}\\${user._id}\\${parent.path}\\${file.name}`
+        : `${req.filePath}\\${user._id}\\${file.name}`;
 
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: 'File already exist' });
@@ -94,7 +93,7 @@ class FileController {
         type,
         size: file.size,
         path: filePath,
-        parent: parent?._id,
+        parent: parent ? parent._id : null,
         user: user._id,
       });
 
@@ -129,7 +128,7 @@ class FileController {
       if (!file) {
         return res.status(400).json({ message: 'File not found' });
       }
-      fileService.deleteFile(file);
+      fileService.deleteFile(req, file);
       await file.remove();
 
       return res.json({ message: 'File was deleted' });
@@ -161,7 +160,7 @@ class FileController {
       const { file } = req.files;
       const user = await User.findById(req.user.id);
       const avatarName = Uuid.v4() + '.jpg';
-      file.mv(config.get('staticPath') + '\\' + avatarName);
+      file.mv(req.filePath + '\\' + avatarName);
       user.avatar = avatarName;
       await user.save();
       return res.json(user);
@@ -174,7 +173,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar);
+      fs.unlinkSync(req.filePath + '\\' + user.avatar);
       user.avatar = null;
       await user.save();
       return res.json(user);
