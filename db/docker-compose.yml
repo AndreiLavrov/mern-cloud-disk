@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  mongodb:
+    image: 'bitnami/mongodb:4.2.11'
+    environment:
+      - MONGODB_USERNAME=db
+      - MONGODB_PASSWORD=db
+      - MONGODB_DATABASE=db
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=db
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+    ports:
+      - 27017:27017
